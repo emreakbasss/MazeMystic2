@@ -1,25 +1,24 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using DG.Tweening;
+
 
 public class CoinCollection : MonoBehaviour
 {
+    private int _coin = 0;
+    [SerializeField] private GameObject _gate;
     private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.CompareTag("flashcoin"))
-        { 
+        if (other.CompareTag("coin"))
+        {
+            _coin++;
+            UIManager.Instance.UpdateCoinText(_coin);
             Destroy(other.gameObject);
         }
-    }
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
+        if (other.CompareTag("Trigger"))
+        {
+            _gate.GetComponent<Animator>().Play("Rotate");
+        }
     }
 }

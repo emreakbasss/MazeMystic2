@@ -13,7 +13,6 @@ public class PlayerController : MonoBehaviour
 
     public Transform currentCube;
     public Transform clickedCube;
-    //public Transform indicator;
 
     [Space]
 
@@ -28,6 +27,9 @@ public class PlayerController : MonoBehaviour
 
     void Update()
     {
+        if (UIManager.Instance.IsEnd)
+            return;
+
         RayCastDown();
 
         if (currentCube.GetComponent<Walkable>().movingGround)
@@ -132,13 +134,13 @@ public class PlayerController : MonoBehaviour
             s.Append(transform.DOMove(
                 new Vector3(
                     finalPath[i].GetComponent<Walkable>().GetWalkPoint().x,
-                    finalPath[i].GetComponent<Walkable>().GetWalkPoint().y + .5f,
-                    finalPath[i].GetComponent<Walkable>().GetWalkPoint().z), .2f * time).SetEase(Ease.Linear));
+                    finalPath[i].GetComponent<Walkable>().GetWalkPoint().y,
+                    finalPath[i].GetComponent<Walkable>().GetWalkPoint().z), 1f * time).SetEase(Ease.Linear));
 
             if (!finalPath[i].GetComponent<Walkable>().dontRotate)
                 s.Join(transform.DOLookAt(finalPath[i].position, .1f, AxisConstraint.Y, Vector3.up));
         }
-        
+
         s.AppendCallback(() => Clear());
     }
 
